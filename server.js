@@ -18,8 +18,14 @@ async function server() {
         app.use(express.json());
         app.use((req,res,next) => {
             req.db = db;
-        })
+            next();
+        });
+        app.use("/v1", Routes);
+        app.use(errorHandlerMiddleware)
     } catch (error) {
-        
+        console.log("SERVER_ERROR:", error);
     }
 }
+
+
+server();
