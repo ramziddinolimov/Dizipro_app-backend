@@ -35,4 +35,23 @@ module.exports = class AdminController {
             next(error);
         }
     }
+
+    static async DeleteBanController(req, res, next) {
+        try {
+            const ban_id = req.params.ban_id;
+
+            const ban = await req.db.user_bans.destroy({
+                where: {
+                    ban_id: ban_id,
+                },
+            });
+
+            res.status(200).json({
+                ok: true,
+                message: "Ban removed",
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
