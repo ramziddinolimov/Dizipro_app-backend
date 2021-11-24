@@ -25,6 +25,24 @@ module.exports = class PaymentController {
 
             if (project.dataValues.user_id !== req.session.user_id)
             throw new res.error(404, "You can't pay for this project")
+
+            //REGISTERED
+
+            if (
+                project.dataValues.payments.find(
+                    (payment) => payment.dataValues.payment_status == "PAID"
+                )
+            )
+            throw new res.error(400, "You have already paid ");
+
+            if(
+                project.dataValues.payments.find(
+                    (payment) =>
+                    payment.dataValues.payment_status == "REGISTERED"
+                )
+            )
+
+            throw new res.error(400, "You have already have payment bill");
         } catch (error) {
             next(error);
         }
