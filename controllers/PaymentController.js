@@ -20,6 +20,11 @@ module.exports = class PaymentController {
                     },
                 ],
             });
+
+            if (!project) throw new res.error(404, "Project not found")
+
+            if (project.dataValues.user_id !== req.session.user_id)
+            throw new res.error(404, "You can't pay for this project")
         } catch (error) {
             next(error);
         }
