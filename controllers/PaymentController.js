@@ -181,6 +181,37 @@ module.exports = class PaymentController {
                 return;
             }
 
+            let response = await req.payments.oson.checkInvoice(
+                payment.dataValues.payment_id
+            );
+
+            if (response?.data?.status == "REGISTERED") {
+                response.data.status = "REGISTERED";
+            }
+
+            await req.db.payments.update(
+                {
+                    payment_pay_url: response.data.pay_url,
+                    payment_status: response.data.status,
+                },
+                {
+                    where: {
+                        payment_id,
+                    },
+                }
+            );
+
+            res.json({
+                ok: true,
+                message: "OK",
+                data: {
+                    payment: {
+                        ...payment.dataValues,
+                        payment_status: response.data.status,
+                    },
+                },
+            });
+
         } catch (error) {
             next(error);
         }
