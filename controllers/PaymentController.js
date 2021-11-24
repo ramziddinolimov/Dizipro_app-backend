@@ -94,4 +94,33 @@ module.exports = class PaymentController {
             next(error);
         }
     }
+
+    static async GetPaymentsProjectController(req, res, next) {
+        try {
+            const project_id = req.params?.project_id;
+
+            if(!project_id) throw new res.error(404, "Project not found");
+
+            const project = await req.db.projects.findOne({
+                where: {
+                    project_id,
+
+                },
+                include: [
+                    {
+                        model: req.db.users,
+                        as: 'user',
+                    },
+                    {
+                        model: req.db.paymments,
+                        as: "payments",
+                    },
+                ],
+            });
+
+            if (!project)
+        } catch (error) {
+            next(error);
+        }
+    }
 }
