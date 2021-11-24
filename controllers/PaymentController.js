@@ -129,6 +129,15 @@ module.exports = class PaymentController {
                 },
                 include: [req.db.projects],
             });
+
+            res.json({
+                ok: true,
+                message: "OK",
+                data: {
+                    payments,
+                },
+            });
+            //REGISTEREDre
         } catch (error) {
             next(error);
         }
