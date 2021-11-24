@@ -157,6 +157,30 @@ module.exports = class PaymentController {
                 },
             });
 
+            if (!project) throw new res.error(404, "Project not found");
+
+            if(project.dataValues.user_id !== req.session.user_id)
+            throw new res.error(404, "You can't pay for this project");
+
+            const payment = await req.db.payments.findOne({
+                where: {
+                    project_id,
+                },
+            });
+
+            if (!payment) throw new res.error(404, "Invalid payment id");
+
+            if (payment.dataValues.payment_status !== "REGISTERED") {
+                res.status(200).json({
+                    ok: true,
+                    message: "OK",
+                    data: {
+                        payment,
+                    },
+                });
+                return;
+            }
+
         } catch (error) {
             next(error);
         }
