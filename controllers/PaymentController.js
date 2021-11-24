@@ -79,7 +79,18 @@ module.exports = class PaymentController {
                     transaction: tr,
                 }
             );
+
+            await tr.commit();
+
+            res.json({
+                ok: true,
+                data: {
+                    payment_url: new_payment.data.pay_url,
+
+                },
+            });
         } catch (error) {
+            await tr.rollback();
             next(error);
         }
     }
