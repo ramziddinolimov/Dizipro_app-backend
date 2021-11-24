@@ -43,6 +43,25 @@ module.exports = class PaymentController {
             )
 
             throw new res.error(400, "You have already have payment bill");
+            const payment = await req.db.payments.create(
+                {
+                    project_id: project_id,
+                },
+                {
+                    transaction: tr,
+                }
+            );
+
+            const new_payment = await req.payments.oson.createInvoice(
+                payment.dataValues.payment_id,
+                project.dataValues.project_budget,
+                project.dataValues.project_currency,
+                req.session["user.user_email"],
+                "Payment for project " + project.dataValues.project_id,
+                req.body?.return_url,
+                60,
+                "en"
+            );
         } catch (error) {
             next(error);
         }
