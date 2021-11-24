@@ -62,6 +62,23 @@ module.exports = class PaymentController {
                 60,
                 "en"
             );
+
+            if (new_payment.data.error_code !== 0) {
+                throw new res.error(400, "Payment failed");
+            }
+
+            await req.db.payments.update(
+                {
+                    payment_bill_id: new_payment.data.bill_id,
+                    payment_pay_url: new_payment.data.pay_url,
+                },
+                {
+                    where: {
+                        payment_id: payment.datavalues.payment_id,
+                    },
+                    transaction: tr,
+                }
+            );
         } catch (error) {
             next(error);
         }
