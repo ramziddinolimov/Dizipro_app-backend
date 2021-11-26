@@ -44,6 +44,17 @@ module.exports = class ProjectController {
                     { transaction: t }
                 );
             }
+
+            const allowedTypeForFile = [
+                ".zip",
+                ".rar",
+                ".obj",
+                ".png",
+                ".jpg",
+                ".jpeg",
+                ".fbx",
+                ".stl",
+            ];
         } catch (error) {
             next(error);
         }
