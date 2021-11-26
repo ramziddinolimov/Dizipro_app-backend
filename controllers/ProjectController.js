@@ -15,7 +15,15 @@ module.exports = class ProjectController {
                     project_softwares: JSON.parse(req.body.project_softwares),
                 },
                 res.error
-            )
+            );
+
+            const project = await req.db.projects.create(
+                {
+                    ...data,
+                    user_id: req.session.user_id,
+                },
+                { transaction: t }
+            );
         } catch (error) {
             next(error);
         }
