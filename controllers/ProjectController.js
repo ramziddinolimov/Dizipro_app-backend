@@ -24,6 +24,26 @@ module.exports = class ProjectController {
                 },
                 { transaction: t }
             );
+
+            for (let skill of data.project_skills){
+                await req.db.project_skills.create(
+                    {
+                        project_id: project.dataValues.project_id,
+                        skill_id: skill,
+                    },
+                    { transaction: t }
+                );
+            }
+
+            for (let software of data.project_softwares){
+                await req.db.projects_softwares.create(
+                    {
+                        project_id: project.dataValues.project_id,
+                        software_id: software,
+                    },
+                    { transaction: t }
+                );
+            }
         } catch (error) {
             next(error);
         }
