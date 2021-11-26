@@ -1,5 +1,6 @@
 const ProjectValidations = require("../validations/ProjectValidations")
 const path = require("path");
+const { func } = require("joi");
 
 module.exports = class ProjectController {
     static async CreateProjectPostController(req, res, next) {
@@ -108,4 +109,9 @@ module.exports = class ProjectController {
             next(error);
         }
     }
+};
+
+function getExtension(filename) {
+    var i = filename.lastIndexOf(".");
+    return i < 0 ? "" : filename.substr(i);
 }
