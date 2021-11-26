@@ -93,7 +93,18 @@ module.exports = class ProjectController {
                     )
                 );
             }
+
+            await t.commit();
+
+            res.status(201).json({
+                ok: true,
+                message: "Project created",
+                data: {
+                    project,
+                },
+            });
         } catch (error) {
+            await t.rollback();
             next(error);
         }
     }
