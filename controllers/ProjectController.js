@@ -73,6 +73,26 @@ module.exports = class ProjectController {
                     throw new res.error(400, "Not allowed file type" + getExtension(file.name));
                 }
             });
+
+            for (let file of files) {
+                const f = await req.db.projects_files.create(
+                    {
+                        projects_file_ext: getExtension(file.name),
+                        project_id: project.dataValues.project_id,
+                    },
+                    { transaction: t }
+                );
+
+                await file.mv(
+                    path.join(
+                        __dirname,
+                        "..",
+                        "public",
+                        "files",
+                        f.dataValues.projects_file_id + getExtension(file.name)
+                    )
+                );
+            }
         } catch (error) {
             next(error);
         }
