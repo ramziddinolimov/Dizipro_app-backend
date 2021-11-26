@@ -55,6 +55,24 @@ module.exports = class ProjectController {
                 ".fbx",
                 ".stl",
             ];
+
+            let files = req.files?.files;
+
+            if (!Array.isArray(files) && files) {
+                files = [req.files?.files];
+            }
+
+            if(!files) throw new res.error(400, "Files not found");
+            if (files?.length > 6) throw new res.error(400, "Files too many");
+
+            files.map((file) => {
+                if (
+                    !allowedTypeForFile.includes(getExtension(file.name)) ||
+                    file.size > 100 * 1024000
+                ) {
+                    throw new res.error(400, "Not allowed file type" + getExtension(file.name));
+                }
+            });
         } catch (error) {
             next(error);
         }
