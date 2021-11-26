@@ -21,4 +21,20 @@ module.exports = class SoftwaresController {
             next(error);
         }
     }
+
+    static async SoftwaresGetController(req, res, next){
+        try {
+            const softwares = await req.db.softwares.findAll();
+
+            res.json({
+                ok: true,
+                message: "OK",
+                data: {
+                    softwares,
+                },
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
