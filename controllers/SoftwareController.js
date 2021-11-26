@@ -11,6 +11,12 @@ module.exports = class SoftwaresController {
             const software = await req.db.softwares.create({
                 software_name,
             });
+
+            res.status(201).json({
+                ok: true,
+                message: 'Software created',
+                data: {software,},
+            });
         } catch (error) {
             next(error);
         }
