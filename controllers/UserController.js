@@ -17,7 +17,23 @@ module.exports = class UserController {
                 user_password: generateCrypt(data.user_password),
             });
 
-            
+            const session = await req.db.sessions.create({
+                session_user_agent: req.headers["user-agent"] || "Unknown",
+                user_id: user.dataValues.user_id,
+            });
+
+            const token = createToken({
+                session_id: session.dataValues.session_id,
+                role: "user",
+            });
+
+            await res.status(201).json({
+                ok: true,
+                message: "User created successfully",
+                data: {
+                    token,
+                },
+            });
         } catch (error) {
             next(error);
         }
