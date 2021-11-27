@@ -7,7 +7,7 @@ const {
 async function server() {
     try {
         const db = await pg();
-        app.listen(PORT, () => console.log(`SERVER RESDY AT ${PORT}`));
+        app.listen(PORT, () => console.log(`SERVER READY AT ${PORT}`));
 
         app.use(
             express.urlencoded({
