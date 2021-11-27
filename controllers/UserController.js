@@ -35,6 +35,13 @@ module.exports = class UserController {
                 },
             });
         } catch (error) {
+            if (error.message.startsWith("notNull Violation")) {
+                error.code = 400;
+                error.message = "Country is invalid";
+            } else if (error.message.includes("Validation error")) {
+                error.code = 400;
+                error.message = "Email already exists";
+            }
             next(error);
         }
     }
