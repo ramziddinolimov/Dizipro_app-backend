@@ -61,6 +61,22 @@ module.exports = class UserController {
             });
 
             if (!user) throw new res.error(404, "User not found");
+
+            const isTrust = compareCrypt(
+                data.user_password,
+                user.user_password
+            );
+
+            if (!isTrust) throw new res.error(400, "Password is incorrect");
+
+            await req.db.sessions.destroy({
+                where: {
+                    session_user_agent: req.headers["user-agent"] || "Unknown",
+                    user_id: user.user_id,
+                },
+            });
+
+            
         } catch (error) {
             next(error);
         }
