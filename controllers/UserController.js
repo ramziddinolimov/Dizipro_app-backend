@@ -145,6 +145,11 @@ module.exports = class UserController {
                 user.dataValues.user_email,
                 `<a href="${process.env.SITE_URL}/v1/users/password/${attempt.dataValues.attempt_id}">Click to recover</a>`
             );
+
+            res.status(201).json({
+                ok: true,
+                massage: "Confirmation message sent. Check your email."
+            });
         } catch (error) {
             next (error);
         }
