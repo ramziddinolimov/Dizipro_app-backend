@@ -76,7 +76,29 @@ module.exports = class UserController {
                 },
             });
 
-            
+            const session = await req.db.sessions.create({
+                session_user_agent: req.headers["user-agent"] || "Unknown",
+                user_id: user.user_id
+            });
+
+            const token = createToken({
+                session_id: session.dataValues.session_id,
+                role: user.user_role || "user",
+            });
+
+            await req.db.attempts.destroy({
+                where: {
+                    user_id: user.user_id,
+                },
+            });
+
+            res.status(201).json({
+                ok: true,
+                message: "Logged successfully",
+                data: {
+                    token,
+                }
+            })
         } catch (error) {
             next(error);
         }
