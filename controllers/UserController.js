@@ -125,7 +125,17 @@ module.exports = class UserController {
                 },
             });
 
-            
+            if (!user) throw new res.error(404, "Invalid email");
+
+            const count = await req.db.attempts.count({
+                where: {
+                    user_id: user.dataValues.user_id,
+                },
+            });
+
+            if (count > 5) {
+                throw new res.error(429, "Too many requests");
+            }
         } catch (error) {
             next (error);
         }
