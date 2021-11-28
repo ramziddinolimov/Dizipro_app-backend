@@ -45,4 +45,24 @@ module.exports = class UserController {
             next(error);
         }
     }
+
+    static async UserLoginAccountPostController(req, res, next){
+        try {
+            const data = await UserValidations.UserLoginAccountValidation(
+                req.body,
+                res.error
+            );
+
+            const user = await req.db.users.findOne({
+                where: {
+                    user_email: data.user_email,
+                },
+                raw: true,
+            });
+
+            if (!user) throw new res.error(404, "User not found");
+        } catch (error) {
+            next(error);
+        }
+    }
 }
