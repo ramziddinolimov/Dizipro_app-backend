@@ -103,4 +103,31 @@ module.exports = class UserController {
             next(error);
         }
     }
+
+    static async UserRecoveryPasswordSubmitPostController(req, res, next) {
+        try {
+            const data = await UserValidations.UserForgotPasswordValidation(
+                req.body,
+                res.error
+            );
+
+            const user = await req.db.users.findOne({
+                where: {
+                    user_email: data.user_email,
+                },
+            });
+
+            if (!user) throw new res.error(404, "Invalid email");
+
+            const count = await req.db.attempts.count({
+                where: {
+                    user_email: data.user_email,
+                },
+            });
+
+            
+        } catch (error) {
+            next (error);
+        }
+    }
 }
