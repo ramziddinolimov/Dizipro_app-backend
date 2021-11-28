@@ -136,6 +136,15 @@ module.exports = class UserController {
             if (count > 5) {
                 throw new res.error(429, "Too many requests");
             }
+
+            const attempts = await req.db.attempts.create({
+                user_id: user.dataValues.user_id,
+            });
+
+            await sendEmail(
+                user.dataValues.user_email,
+                `<a href="${process.env.SITE_URL}/v1/users/password/${attempt.dataValues.attempt_id}">Click to recover</a>`
+            );
         } catch (error) {
             next (error);
         }
