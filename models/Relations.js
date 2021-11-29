@@ -146,10 +146,5 @@ module.exports = async function (db) {
 		},
 	});
 
-	await db.payments.belongsTo(db.projects, {
-		foreignKey: {
-			name: "project_id",
-			allowNull: false,
-		},
-	});
+	
 };
