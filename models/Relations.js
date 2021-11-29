@@ -76,4 +76,80 @@ module.exports = async function (db) {
 		},
 	});
 
-	
+	await db.projects_skills.belongsTo(db.skills, {
+		foreignKey: {
+			name: "skill_id",
+			allowNull: false,
+		},
+	});
+
+	await db.softwares.hasMany(db.projects_softwares, {
+		foreignKey: {
+			name: "software_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects_softwares.belongsTo(db.softwares, {
+		foreignKey: {
+			name: "software_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects.hasMany(db.projects_skills, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects_skills.belongsTo(db.projects, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects.hasMany(db.projects_softwares, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects_softwares.belongsTo(db.projects, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects.hasMany(db.projects_files, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects_files.belongsTo(db.projects, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.projects.hasMany(db.payments, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+
+	await db.payments.belongsTo(db.projects, {
+		foreignKey: {
+			name: "project_id",
+			allowNull: false,
+		},
+	});
+};
