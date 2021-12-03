@@ -37,3 +37,27 @@ class OSON_API {
 				language,
 			},
 		});
+
+        return response;
+	}
+
+	async checkInvoice(transaction_id) {
+		let response = await axios({
+			url: "https://api.oson.uz/api/invoice/status",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+				token: this.API_KEY,
+			},
+			method: "POST",
+			data: {
+				merchant_id: this.MERCHANT_ID,
+				transaction_id,
+			},
+		});
+
+		return response;
+	}
+}
+
+module.exports = OSON_API;
