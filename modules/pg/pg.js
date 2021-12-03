@@ -14,3 +14,18 @@ const ProjectsSkillModel = require("../../models/ProjectsSkillModel");
 const ProjectsSoftwares = require("../../models/ProjectsSoftwares");
 const ProjectsFilesModel = require("../../models/ProjectsFilesModel");
 const PaymentModel = require("../../models/PaymentModel");
+
+
+if (!process.env.PG_CONNECTION_URL) {
+	throw new Error("PG CONNECTION STRING NOT FOUND");
+}
+
+const sequelize = new Sequelize(process.env.PG_CONNECTION_URL, {
+	logging: false,
+});
+
+module.exports = async function pg() {
+	try {
+		await sequelize.authenticate();
+
+		let db = {};
