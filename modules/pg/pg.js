@@ -29,3 +29,33 @@ module.exports = async function pg() {
 		await sequelize.authenticate();
 
 		let db = {};
+
+
+        db.countries = await CountryModel(sequelize, Sequelize);
+		db.users = await UserModel(sequelize, Sequelize);
+		db.sessions = await UserSessionsModel(sequelize, Sequelize);
+		db.attempts = await EmailAttempts(sequelize, Sequelize);
+		db.user_bans = await BanModel(sequelize, Sequelize);
+		db.skills = await SkillModel(sequelize, Sequelize);
+		db.softwares = await SoftwareModel(sequelize, Sequelize);
+		db.projects = await ProjectModel(sequelize, Sequelize);
+		db.projects_skills = await ProjectsSkillModel(sequelize, Sequelize);
+		db.projects_softwares = await ProjectsSoftwares(sequelize, Sequelize);
+		db.projects_files = await ProjectsFilesModel(sequelize, Sequelize);
+		db.payments = await PaymentModel(sequelize, Sequelize);
+		db.sequelize = sequelize;
+
+		await Relations(db);
+
+		await sequelize.sync({ force: false });
+
+		await init(db);
+
+		return db;
+	} catch (error) {
+		console.log("SQL_ERROR:", error);
+	}
+};
+
+// 947730a1-3090-49be-8447-dee912e3e6ad
+// 5a63a166-d6c4-4b6c-baf3-a853affbb332
